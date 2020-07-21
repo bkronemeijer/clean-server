@@ -24,13 +24,15 @@ module.exports = {
       isAdmin: {
         type: Sequelize.BOOLEAN,
       },
-      taskId: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-      },
       householdId: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: {
+          model: "households",
+          key: "id"
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL"
       },
       createdAt: {
         allowNull: false,
