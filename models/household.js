@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   household.init({
-    nickName: DataTypes.STRING,
-    deadline: DataTypes.DATE
+    nickName: { type: DataTypes.STRING, allowNull: false},
+    deadline: { type: DataTypes.DATE, allowNull: false},
   }, {
     sequelize,
     modelName: 'household',

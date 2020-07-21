@@ -9,10 +9,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       nickName: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       deadline: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

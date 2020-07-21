@@ -14,10 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   task.init({
-    title: DataTypes.STRING,
-    description: DataTypes.TEXT,
-    householdId: DataTypes.INTEGER,
-    userId: DataTypes.INTEGER
+    title: { type: DataTypes.STRING, allowNull: false },
+    description: { type: DataTypes.TEXT, allowNull: false },
+    householdId: { type: DataTypes.INTEGER, allowNull: false },
+    userId: { type: DataTypes.INTEGER, allowNull: false },
   }, {
     sequelize,
     modelName: 'task',
