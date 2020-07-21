@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      user.belongsTo(models.household)
+      user.hasOne(models.task)
     }
   };
   user.init({
@@ -18,7 +20,6 @@ module.exports = (sequelize, DataTypes) => {
     email: { type: DataTypes.STRING, allowNull: false, unique: true },
     password: { type: DataTypes.STRING, allowNull: false },
     isAdmin: { type: DataTypes.BOOLEAN },
-    taskId: { type: DataTypes.INTEGER, allowNull: false },
     householdId: { type: DataTypes.INTEGER, allowNull: false },
   }, {
     sequelize,

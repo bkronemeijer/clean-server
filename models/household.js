@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      household.hasMany(models.user)
+      household.hasMany(models.task)
     }
   };
   household.init({
