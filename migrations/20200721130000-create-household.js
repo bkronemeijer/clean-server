@@ -12,8 +12,12 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      deadline: {
+      startDate: {
         type: Sequelize.DATE,
+        allowNull: false
+      },
+      recurrence: {
+        type: Sequelize.INTEGER,
         allowNull: false
       },
       createdAt: {
