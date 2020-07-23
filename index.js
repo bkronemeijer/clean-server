@@ -2,6 +2,7 @@ const express = require("express");
 const householdRouter = require("./routers/household");
 const userRouter = require("./routers/user");
 const taskRouter = require("./routers/task");
+const authRouter = require("./routers/auth");
 const PORT = 4000
 const corsMiddleWare = require("cors");
 
@@ -21,7 +22,7 @@ if (process.env.DELAY) {
 app.use("/household", householdRouter);
 app.use("/user", userRouter);
 app.use("/task", taskRouter);
-// app.use("/", authRouter);
+app.use("/", authRouter);
 
 // Listen for connections on specified port (default is port 4000)
 
