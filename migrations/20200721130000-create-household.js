@@ -10,7 +10,8 @@ module.exports = {
       },
       nickName: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
       },
       startDate: {
         type: Sequelize.DATE,
