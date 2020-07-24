@@ -41,31 +41,33 @@ router.post('/login', async (req, res, next) => {
 
 router.post('/signup', async (req, res, next) => {
   try {
-    const {name, email, password, newHousehold, householdName} = req.body
+    const {name, email, password, action, householdName, startDate, recurrence} = req.body
 
-    if (!name || !email || !password || !newHousehold || !householdName){
+    if (!name || !email || !password || !action || !householdName){
       return res.status(400).send("Please provide name, email, password, action and household name")
+    } else if (action === "create" && (!startDate || !recurrence)){
+      return res.status(400).send("Please also provide startdate and recurrence")
     }
 
     // check if householdName exists
     const household = await Household.findOne({where: {nickName: householdName}})
 
-    if (newHousehold === "true" && household) {
+    if (action === "create" && household) {
       return res.status(400).send("Household nickname already taken.")
     }
 
-    if ( !household && newHousehold === "false") {
+    if ( !household && action === "join") {
       return res.status(400).send("You are trying to join a household that does not exist")
     }
 
     // get householdId by either getting household.id or by creating an new household
     let householdId
 
-    if (newHousehold === "true") {
+    if (action === "create") {
       const newHousehold = await Household.create({
         nickName: householdName,
-        startDate: new Date(),
-        recurrence: 7
+        startDate,
+        recurrence
       })
 
       householdId = newHousehold.id
@@ -73,8 +75,8 @@ router.post('/signup', async (req, res, next) => {
       householdId = household.id
     }
 
-    // add user to database, if action === newHousehold then user isAdmin = true
-    const isAdmin = newHousehold === "true" ? true : false
+    // add user to database, if action === create then user isAdmin = true
+    const isAdmin = action === "create" ? true : false
 
     const newUser = await User.create({
       name,
