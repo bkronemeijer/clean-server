@@ -4,6 +4,7 @@ const { toJWT } = require("../auth/jwt");
 const User = require("../models/").user;
 const Task = require("../models").task;
 const Household = require("../models").household;
+const authMiddleware = require("../auth/middleware");
 const saltrounds = 10
 
 const router = new Router();
@@ -96,5 +97,11 @@ router.post('/signup', async (req, res, next) => {
     return res.status(400).send("Something went wrong, sorry")
   }
 })
+
+router.get("/me", authMiddleware, async (req, res) => {
+  delete req.user.dataValues["password"];
+  res.status(200).send({ ...req.user.dataValues });
+});
+
 
 module.exports = router
