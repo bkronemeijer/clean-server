@@ -1,3 +1,4 @@
+const authMiddleware = require("../auth/middleware");
 const { Router } = require("express");
 const User = require("../models/").user;
 const Task = require("../models").task;
@@ -5,7 +6,7 @@ const Household = require("../models").household;
 
 const router = new Router();
 
-router.post('/', async (req, res, next) => {
+router.post('/', authMiddleware, async (req, res, next) => {
   try {
     const id = parseInt(req.body.id)
 
