@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   household.init({
-    nickName: { type: DataTypes.STRING, allowNull: false},
+    nickName: { type: DataTypes.STRING, allowNull: false, unique:true},
     startDate: { type: DataTypes.DATE, allowNull: false},
     recurrence: { type: DataTypes.INTEGER, allowNull: false}
   }, {
