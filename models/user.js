@@ -20,6 +20,8 @@ module.exports = (sequelize, DataTypes) => {
     email: { type: DataTypes.STRING, allowNull: false, unique: true },
     password: { type: DataTypes.STRING, allowNull: false },
     isAdmin: { type: DataTypes.BOOLEAN },
+    successes: { type: DataTypes.INTEGER },
+    fails: { type: DataTypes.INTEGER },
     householdId: { type: DataTypes.INTEGER, allowNull: false },
   }, {
     sequelize,
