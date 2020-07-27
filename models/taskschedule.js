@@ -11,14 +11,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      taskSchedule.belongsTo(models.user)
+      taskSchedule.belongsTo(models.task)
     }
   };
   taskSchedule.init({
     deadline: { type: DataTypes.DATE, allowNull: false },
     isDone: { type: DataTypes.BOOLEAN, allowNull: false },
-    proofPicture: { type: DataTypes.BLOB, allowNull: false },
-    taskId: { type: DataTypes.NUMBER, allowNull: false },
-    userId: { type: DataTypes.NUMBER, allowNull: false },
+    proofPicture: { type: DataTypes.BLOB },
+    taskId: { type: DataTypes.INTEGER, allowNull: false },
+    userId: { type: DataTypes.INTEGER, allowNull: false }
   }, {
     sequelize,
     modelName: 'taskSchedule',

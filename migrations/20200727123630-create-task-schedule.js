@@ -17,16 +17,27 @@ module.exports = {
         type: Sequelize.BOOLEAN
       },
       proofPicture: {
-        allowNull: false,
         type: Sequelize.BLOB
       },
       taskId: {
         allowNull: false,
-        type: Sequelize.NUMBER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "tasks",
+          key: "id"
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL"
       },
       userId: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        type: Sequelize.NUMBER
+        references: {
+          model: "users",
+          key: "id"
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL"
       },
       createdAt: {
         allowNull: false,
