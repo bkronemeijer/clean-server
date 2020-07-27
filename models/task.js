@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      task.belongsTo(models.user)
+      task.hasOne(models.taskSchedule)
       task.belongsTo(models.household)
     }
   };
@@ -19,7 +19,6 @@ module.exports = (sequelize, DataTypes) => {
     title: { type: DataTypes.STRING, allowNull: false },
     description: { type: DataTypes.TEXT, allowNull: false },
     householdId: { type: DataTypes.INTEGER, allowNull: false },
-    userId: { type: DataTypes.INTEGER, allowNull: false },
   }, {
     sequelize,
     modelName: 'task',

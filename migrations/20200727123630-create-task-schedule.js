@@ -1,26 +1,39 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('tasks', {
+    await queryInterface.createTable('taskSchedules', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      title: {
-        type: Sequelize.STRING,
-        allowNull: false
+      deadline: {
+        allowNull: false,
+        type: Sequelize.DATE
       },
-      description: {
-        type: Sequelize.TEXT,
-        allowNull: false
+      isDone: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN
       },
-      householdId: {
+      proofPicture: {
+        type: Sequelize.BLOB
+      },
+      taskId: {
+        allowNull: false,
         type: Sequelize.INTEGER,
-        allowNull: false, 
         references: {
-          model: "households",
+          model: "tasks",
+          key: "id"
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL"
+      },
+      userId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "users",
           key: "id"
         },
         onUpdate: "CASCADE",
@@ -37,6 +50,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('tasks');
+    await queryInterface.dropTable('taskSchedules');
   }
 };

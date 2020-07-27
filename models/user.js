@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       user.belongsTo(models.household)
-      user.hasOne(models.task)
+      user.hasOne(models.taskSchedule)
     }
   };
   user.init({
