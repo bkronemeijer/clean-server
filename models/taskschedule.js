@@ -13,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       taskSchedule.belongsTo(models.user)
       taskSchedule.belongsTo(models.task)
-      taskSchedule.belongsTo(models.household)
     }
   };
   taskSchedule.init({

@@ -20,7 +20,7 @@ const getAllHouseholds = async() => {
 
 const getMostCurrentTasks = async(householdId, recurrence) => {
   try {
-    const recentTasks = await TaskSchedule.findAll({raw: true, where: {userId: householdId, deadline: {[Op.between]: [new Date(), moment().add(recurrence, 'd')] }}, include: {model: User, attributes: ["householdId"]}})
+    const recentTasks = await TaskSchedule.findAll({raw: true, where: {deadline: {[Op.between]: [new Date(), moment().add(recurrence, 'd')] }}, include: {model: User, where: {householdId}}})
     // const recentTasks = await TaskSchedule.findAll({raw: true, where: {userId: householdId, deadline: {[Op.between]: [new Date(), moment().add(recurrence, 'd')] }}})            // test string
     // const recentTasks = await TaskSchedule.findAll({raw: true, where: {userId: householdId, deadline: {[Op.between]: [moment().subtract(recurrence, 'd'), new Date()] }}})       // should be the eventual string
 
