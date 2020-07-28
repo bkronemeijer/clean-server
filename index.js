@@ -5,6 +5,7 @@ const taskRouter = require("./routers/task");
 const authRouter = require("./routers/auth");
 const PORT = 4000
 const corsMiddleWare = require("cors");
+// const updateScheduleWorker = require("./workers/updateScheduleWorker")
 
 const app = express();
 
@@ -23,8 +24,6 @@ app.use("/household", householdRouter);
 app.use("/user", userRouter);
 app.use("/task", taskRouter);
 app.use("/", authRouter);
-
-// Listen for connections on specified port (default is port 4000)
 
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
