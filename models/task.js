@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      task.hasOne(models.taskSchedule)
+      task.hasMany(models.taskSchedule)
       task.belongsTo(models.household)
     }
   };

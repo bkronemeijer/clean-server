@@ -30,7 +30,8 @@ const getMostCurrentTasks = async(householdId, recurrence) => {
   }
 }
 
-const deadlineComplete = async(isDone, userId) => {
+const deadlineComplete = async(isDone, taskScheduleId, userId, householdId, recurrence) => {
+  console.log("in the deadline function now", taskScheduleId)
   let addToUser
   const userToUpdate = await User.findByPk(userId)
 
@@ -40,12 +41,43 @@ const deadlineComplete = async(isDone, userId) => {
     addToUser = await userToUpdate.update({fails: userToUpdate.fails + 1})
   }
 
-  // createNewSchedule()
+  createNewSchedule(taskScheduleId, householdId, recurrence)
 }
 
-const createNewSchedule = async(householdId) => {
+const createNewSchedule = async(taskScheduleId, householdId, recurrence) => {
   // get array of users that belong to this household
-  const newRow = await TaskSchedule.create({deadline: moment().add(7, 'd'), isDone: false, proofPicture: null, taskId: 1, userId: 1})
+  try {
+    // which userId did which taskId this week
+    const users = await User.findAll({raw: true, where: {householdId}, attributes: ["id"], include: {model: TaskSchedule, where: {deadline: {[Op.between]: [new Date(), moment().add(recurrence, 'd')] }}, attributes: ["id", "taskId"]}})
+    console.log(users)
+    const userArray = users.map(user => user.id)
+    // const taskArray = users.map(user => user['taskSchedule.id'])
+    userArray.sort((a, b) => a - b)
+    // taskArray.sort((a, b) => a - b)
+    console.log(userArray)
+
+
+    // which is the next in line in index
+    const currentTask = users.find(user => {
+      return user['taskSchedule.id'] === taskScheduleId
+    })
+    console.log(currentTask)
+
+    const currentIndex = userArray.indexOf(currentTask.id)
+    if (currentIndex === -1 || currentIndex === userArray.length - 1) {
+      newIndex = 0
+    } else if (currentIndex !== -1 || currentIndex !== userArray.length - 1){
+      // if it is the last index, go back to index 0
+      newIndex = currentIndex + 1
+    }
+    const newUser = userArray[newIndex]
+    console.log(newIndex, newUser)
+
+    const newRow = await TaskSchedule.create({deadline: moment().add(recurrence, 'd'), isDone: false, proofPicture: null, taskId: currentTask['taskSchedule.taskId'], userId: newUser})
+  } catch (error) {
+    console.log(error)
+  }
+
 
 }
 
@@ -58,16 +90,15 @@ const update = schedule.scheduleJob('10 * * * * *', async function(){        // 
 
   for (const household of households) {
     const tasks = await getMostCurrentTasks(household.id, household.recurrence)
-    console.log(tasks)
-    // for (const task of tasks) {
-    //   console.log("AAP NOOT PIES", task.deadline)
-    //   if (moment(task.deadline).isSame(moment(), 'day')) { // bit of leeway so that it must surely work if the deadline is today
-    //     console.log('check for deadline')
-    //     deadlineComplete(task.isDone, task.userId)
-    //   } else if (moment(task.deadline).isBetween(moment().add(1, 'h'), moment().add(25, 'h'))){
-    //     console.log('mail the users')
-    //   } 
-    // }
+    for (const task of tasks) {
+      console.log("AAP NOOT MIES", household.id, task.id)
+      if (moment(task.deadline).isSame(moment(), 'day')) { // bit of leeway so that it must surely work if the deadline is today
+        console.log('check for deadline', task['user.householdId'])
+        await deadlineComplete(task.isDone, task.id, task.userId, task['user.householdId'], household.recurrence)
+      } else if (moment(task.deadline).isBetween(moment().add(1, 'h'), moment().add(25, 'h'))){
+        console.log('mail the users', task['user.householdId'])
+      } 
+    }
   }
 });
 
