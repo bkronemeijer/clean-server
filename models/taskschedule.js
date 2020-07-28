@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       taskSchedule.belongsTo(models.user)
       taskSchedule.belongsTo(models.task)
+      taskSchedule.belongsTo(models.household)
     }
   };
   taskSchedule.init({
@@ -20,7 +21,8 @@ module.exports = (sequelize, DataTypes) => {
     isDone: { type: DataTypes.BOOLEAN, allowNull: false },
     proofPicture: { type: DataTypes.BLOB },
     taskId: { type: DataTypes.INTEGER, allowNull: false },
-    userId: { type: DataTypes.INTEGER, allowNull: false }
+    userId: { type: DataTypes.INTEGER, allowNull: false },
+    householdId: { type: DataTypes.INTEGER, allowNull: false }
   }, {
     sequelize,
     modelName: 'taskSchedule',

@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       household.hasMany(models.user)
       household.hasMany(models.task)
+      household.hasMany(models.taskSchedule)
     }
   };
   household.init({
