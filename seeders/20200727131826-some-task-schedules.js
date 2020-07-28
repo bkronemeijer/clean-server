@@ -8,7 +8,6 @@ module.exports = {
        proofPicture: null,
        userId: 1,
        taskId: 1,
-       householdId: 1,
        createdAt: new Date(),
       updatedAt: new Date()
      },{
@@ -17,7 +16,6 @@ module.exports = {
       proofPicture: null,
       userId: 1,
       taskId: 1,
-      householdId: 1,
       createdAt: new Date(),
       updatedAt: new Date()
     },{
@@ -26,7 +24,6 @@ module.exports = {
       proofPicture: null,
       userId: 2,
       taskId: 2,
-      householdId: 2,
       createdAt: new Date(),
       updatedAt: new Date()
     },{
@@ -35,7 +32,6 @@ module.exports = {
       proofPicture: null,
       userId: 2,
       taskId: 2,
-      householdId: 2,
       createdAt: new Date(),
       updatedAt: new Date()
     },{
@@ -44,7 +40,6 @@ module.exports = {
       proofPicture: null,
       userId: 3,
       taskId: 3,
-      householdId: 3,
       createdAt: new Date(),
       updatedAt: new Date()
     },{
@@ -53,7 +48,6 @@ module.exports = {
       proofPicture: null,
       userId: 4,
       taskId: 4,
-      householdId: 4,
       createdAt: new Date(),
       updatedAt: new Date()
     },{
@@ -62,7 +56,6 @@ module.exports = {
       proofPicture: null,
       userId: 4,
       taskId: 4,
-      householdId: 4,
       createdAt: new Date(),
       updatedAt: new Date()
     }], {});
