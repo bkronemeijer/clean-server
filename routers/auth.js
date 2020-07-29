@@ -14,7 +14,7 @@ router.post('/login', async (req, res, next) => {
     const {email, password} = req.body
 
     if (!email || !password) {
-      return res.status(400).send("Please provide email and password")
+      return res.status(400).send({message: "Please provide email and password"})
     }
 
     const user = await User.findOne({where: {email}})
@@ -36,7 +36,7 @@ router.post('/login', async (req, res, next) => {
     return res.status(200).send({ token, ...user.dataValues });
   } catch (error) {
     console.log(error)
-    return res.status(400).send("Something went wrong, sorry")
+    return res.status(400).send({message: "Something went wrong, sorry"})
   }
 })
 
@@ -45,20 +45,26 @@ router.post('/signup', async (req, res, next) => {
     const {name, email, password, action, householdName, startDate, recurrence} = req.body
 
     if (!name || !email || !password || !action || !householdName){
-      return res.status(400).send("Please provide name, email, password, action and household name")
+      return res.status(400).send({message: "Please provide name, email, password, action and household name"})
     } else if (action === "create" && (!startDate || !recurrence)){
-      return res.status(400).send("Please also provide startdate and recurrence")
+      return res.status(400).send({message: "Please also provide startdate and recurrence"})
+    }
+
+    // check if email exists
+    const existingEmail = await User.findOne({where: {email}})
+    if (existingEmail) {
+      return res.status(400).send({message: "Please provide your unique email address"})
     }
 
     // check if householdName exists
     const household = await Household.findOne({where: {nickName: householdName}})
 
     if (action === "create" && household) {
-      return res.status(400).send("Household nickname already taken.")
+      return res.status(400).send({message: "Household nickname already taken"})
     }
 
     if ( !household && action === "join") {
-      return res.status(400).send("You are trying to join a household that does not exist")
+      return res.status(400).send({message: "You are trying to join a household that does not exist"})
     }
 
     // get householdId by either getting household.id or by creating an new household
@@ -94,7 +100,7 @@ router.post('/signup', async (req, res, next) => {
     res.status(201).json({ token, ...newUser.dataValues });
   } catch (error) {
     console.log(error)
-    return res.status(400).send("Something went wrong, sorry")
+    return res.status(400).send({message: "Something went wrong, sorry"})
   }
 })
 
