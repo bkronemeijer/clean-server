@@ -1,5 +1,6 @@
 const { Router } = require("express")
 const TaskSchedule = require("../models").taskSchedule
+const Task = require("../models").task
 const authMiddleware = require("../auth/middleware")
 const Sequelize = require('sequelize')
 const moment = require('moment')
@@ -10,13 +11,13 @@ const router = new Router();
 
 router.post('/', async (req, res, next) => {
   try {
-    const {id, recurrence} = req.body
+    const {userId, recurrence} = req.body
 
-    if (!id) {
-      return res.status(400).send({message: "Please provide an id"})  
+    if (!userId || !recurrence) {
+      return res.status(400).send({message: "Please provide an id and the recurrence"})  
     }
 
-    const task = await TaskSchedule.findAll({raw: true, where: {userId: id, deadline: {[Op.between]: [moment().subtract(recurrence, 'd'), new Date()] }}})
+    const task = await TaskSchedule.findAll({where: {userId, deadline: {[Op.between]: [new Date(), moment().add(recurrence, 'd')] }}, include: [Task]})
 
     res.json(task)
   } catch (error) {

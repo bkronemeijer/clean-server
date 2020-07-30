@@ -11,7 +11,7 @@ router.post('/', authMiddleware, async (req, res, next) => {
     const id = parseInt(req.body.id)
 
     if (!id) {
-      return res.status(400).send("Please provide an id")
+      return res.status(400).send({message: "Please provide an id"})
     }
 
     const household = await Household.findByPk(id, {include: [User]})
@@ -19,7 +19,7 @@ router.post('/', authMiddleware, async (req, res, next) => {
     res.json(household)
   } catch (error) {
     console.log(error)
-    res.status(400).send("Something went wrong, sorry")
+    res.status(400).send({message: "Something went wrong, sorry"})
   }
 })
 
