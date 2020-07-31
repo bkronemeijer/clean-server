@@ -14,7 +14,7 @@ module.exports = {
         unique: true
       },
       startDate: {
-        type: Sequelize.NUMBER,
+        type: Sequelize.INTEGER,
         allowNull: false
       },
       recurrence: {
