@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     successes: { type: DataTypes.INTEGER },
     fails: { type: DataTypes.INTEGER },
     householdId: { type: DataTypes.INTEGER, allowNull: false },
+    wantsMail: { type: DataTypes.BOOLEAN },
   }, {
     sequelize,
     modelName: 'user',
