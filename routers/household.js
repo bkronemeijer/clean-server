@@ -23,5 +23,29 @@ router.post('/', authMiddleware, async (req, res, next) => {
   }
 })
 
+router.patch('/', async (req, res, next) => {
+  try {
+    const id = parseInt(req.body.id)
+    const {name, recurrence, day} = req.body
+
+    if (!id) {
+      return res.status(400).send({message: "Please provide an id"})
+    }
+
+    const householdToUpdate = await Household.findByPk(id)
+
+    householdToUpdate.name = name
+    householdToUpdate.recurrence = recurrence
+    householdToUpdate.startDay = day
+
+    const updatedHousehold = await userToUpdate.save()
+
+    res.json(updatedHousehold)
+  } catch (error) {
+    console.log(error)
+    res.status(400).send({message: "Something went wrong, sorry"})
+  }
+})
+
 
 module.exports = router

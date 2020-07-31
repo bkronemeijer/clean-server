@@ -23,7 +23,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.patch('/', async (req, res, next) => {
+router.patch('/', authMiddleware, async (req, res, next) => {
   try {
     const id = parseInt(req.body.id)
     const name = req.body.name
