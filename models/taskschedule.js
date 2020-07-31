@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     isDone: { type: DataTypes.BOOLEAN, allowNull: false },
     proofPicture: { type: DataTypes.BLOB },
     taskId: { type: DataTypes.INTEGER, allowNull: false },
-    userId: { type: DataTypes.INTEGER, allowNull: false }
+    userId: { type: DataTypes.INTEGER, allowNull: false },
   }, {
     sequelize,
     modelName: 'taskSchedule',
