@@ -20,7 +20,6 @@ module.exports = {
         type: Sequelize.BLOB
       },
       taskId: {
-        allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: "tasks",

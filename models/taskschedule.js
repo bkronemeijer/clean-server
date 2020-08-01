@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     deadline: { type: DataTypes.DATE, allowNull: false },
     isDone: { type: DataTypes.BOOLEAN, allowNull: false },
     proofPicture: { type: DataTypes.BLOB },
-    taskId: { type: DataTypes.INTEGER, allowNull: false },
+    taskId: { type: DataTypes.INTEGER },
     userId: { type: DataTypes.INTEGER, allowNull: false },
   }, {
     sequelize,
