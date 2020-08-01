@@ -10,7 +10,7 @@ const authMiddleware = require("../auth/middleware")
 
 const router = new Router();
 
-router.post('/', authMiddleware, async (req, res, next) => {
+router.post('/', async (req, res, next) => {
   try {
     const householdId = parseInt(req.body.householdId)
     const recurrence = parseInt(req.body.recurrence)
