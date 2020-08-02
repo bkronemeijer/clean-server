@@ -28,7 +28,7 @@ router.post('/', authMiddleware, async (req, res, next) => {
   }
 })
 
-router.post('/delete', async (req, res, next) => {
+router.post('/delete', authMiddleware, async (req, res, next) => {
   try {
     const taskId = parseInt(req.body.taskId)
     console.log(taskId)

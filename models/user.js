@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     isAdmin: { type: DataTypes.BOOLEAN },
     successes: { type: DataTypes.INTEGER },
     fails: { type: DataTypes.INTEGER },
-    householdId: { type: DataTypes.INTEGER, allowNull: false },
+    householdId: { type: DataTypes.INTEGER },
     wantsMail: { type: DataTypes.BOOLEAN },
   }, {
     sequelize,
