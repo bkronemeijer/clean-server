@@ -47,4 +47,21 @@ router.post('/delete', authMiddleware, async (req, res, next) => {
   }
 })
 
+router.post("/add", authMiddleware, async(req, res, next) => {
+  try {
+    const {userId, householdId, deadline, title, description} = req.body
+    if (!userId || !householdId || !deadline || !title || !description ) {
+      res.status(400).send({message: "Missing parameters"})
+    }
+
+    const newTask = await Task.create({title, description, householdId})
+    const newTaskSchedule = await TaskSchedule.create({deadline, isDone: false, taskId: newTask.id, userId})
+
+    res.json(newTaskSchedule)
+  } catch (error) {
+    console.log(error)
+    res.status(400).send({message: "Something went wrong, sorry"})
+  }
+})
+
 module.exports = router
