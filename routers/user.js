@@ -47,4 +47,22 @@ router.patch('/', authMiddleware, async (req, res, next) => {
   }
 })
 
+router.post('/delete', authMiddleware, async (req, res, next) => {
+  try {
+    const userId = parseInt(req.body.userId)
+
+    if (!userId) {
+      return res.status(400).send({message: "Please provide an id"})
+    }
+
+    const userToDelete = await User.findByPk(userId)
+    const deletedUser = await userToDelete.update({householdId: null})
+
+    res.json(deletedUser)
+  } catch (error) {
+    console.log(error)
+    res.status(400).send({message: "Something went wrong, sorry"})
+  }
+})
+
 module.exports = router

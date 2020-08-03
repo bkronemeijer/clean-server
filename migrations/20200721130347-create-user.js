@@ -26,7 +26,6 @@ module.exports = {
       },
       householdId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         references: {
           model: "households",
           key: "id"
