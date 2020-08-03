@@ -45,21 +45,5 @@ router.patch('/', authMiddleware, async (req, res, next) => {
   }
 })
 
-// router.post('/taskview', authMiddleware, async (req, res, next) => {
-//   try {
-//     const {taskId, recurrence} = req.body
-
-//     if (!userId || !recurrence) {
-//       return res.status(400).send({message: "Please provide an id and the recurrence"})  
-//     }
-
-//     const task = await TaskSchedule.findAll({where: {taskId, deadline: {[Op.between]: [new Date(), moment().add(recurrence, 'd')] }}, include: [User]})
-
-//     res.json(task)
-//   } catch (error) {
-//     console.log(error)
-//     res.status(400).send({message: "Something went wrong, sorry"})
-//   }
-// })
 
 module.exports = router
