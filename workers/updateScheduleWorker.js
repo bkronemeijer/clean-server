@@ -20,7 +20,7 @@ const getAllHouseholds = async() => {
 
 const getMostCurrentTasks = async(householdId, recurrence) => {
   try {
-    const recentTasks = await TaskSchedule.findAll({raw: true, where: {deadline: {[Op.between]: [new Date(), moment().add(recurrence, 'd')] }}, include: {model: User, where: {householdId}}})
+    const recentTasks = await TaskSchedule.findAll({raw: true, where: {deadline: {[Op.between]: [moment().subtract(recurrence, 'd'), new Date()] }}, include: {model: User, where: {householdId}}})
     // const recentTasks = await TaskSchedule.findAll({raw: true, where: {userId: householdId, deadline: {[Op.between]: [new Date(), moment().add(recurrence, 'd')] }}})            // test string
     // const recentTasks = await TaskSchedule.findAll({raw: true, where: {userId: householdId, deadline: {[Op.between]: [moment().subtract(recurrence, 'd'), new Date()] }}})       // should be the eventual string
 
@@ -84,8 +84,8 @@ const createNewSchedule = async(taskScheduleId, householdId, recurrence) => {
 }
 
 
-// const i = schedule.scheduleJob('0 22 * * *', async function(){       // actual line -> tests every day at 22h
-const update = schedule.scheduleJob('10 * * * * *', async function(){        // test line -> tests every 10 seconds past the minute
+const update = schedule.scheduleJob('0 22 * * *', async function(){       // actual line -> tests every day at 22h
+// const update = schedule.scheduleJob('10 * * * * *', async function(){        // test line -> tests every 10 seconds past the minute
   const households = await getAllHouseholds();
 
   households.forEach(async (household) => {
@@ -99,19 +99,6 @@ const update = schedule.scheduleJob('10 * * * * *', async function(){        // 
       } 
     })
   })
-
-  // for (const household of households) {
-  //   const tasks = await getMostCurrentTasks(household.id, household.recurrence)
-  //   for (const task of tasks) {
-  //     console.log("AAP NOOT MIES", household.id, task.id)
-  //     if (moment(task.deadline).isSame(moment(), 'day')) { // bit of leeway so that it must surely work if the deadline is today
-  //       console.log('check for deadline', task['user.householdId'])
-  //       await deadlineComplete(task.isDone, task.id, task.userId, task['user.householdId'], household.recurrence)
-  //     } else if (moment(task.deadline).isBetween(moment().add(1, 'h'), moment().add(25, 'h'))){
-  //       console.log('mail the users', task['user.householdId'])
-  //     } 
-  //   }
-  // }
 });
 
 module.exports = update
