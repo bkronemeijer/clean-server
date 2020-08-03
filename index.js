@@ -15,12 +15,6 @@ app.use(bodyParserMiddleWare);
 
 app.use(corsMiddleWare());
 
-if (process.env.DELAY) {
-  app.use((req, res, next) => {
-    setTimeout(() => next(), parseInt(process.env.DELAY));
-  });
-}
-
 app.use("/household", householdRouter);
 app.use("/user", userRouter);
 app.use("/task", taskRouter);
