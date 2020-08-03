@@ -27,7 +27,7 @@ router.post('/static', authMiddleware, async (req, res, next) => {
   }
 })
 
-router.post('/current', async (req, res, next) => {
+router.post('/current', authMiddleware, async (req, res, next) => {
   try {
     const householdId = parseInt(req.body.householdId)
     const recurrence = parseInt(req.body.recurrence)
