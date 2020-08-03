@@ -10,7 +10,24 @@ const authMiddleware = require("../auth/middleware")
 
 const router = new Router();
 
-router.post('/', authMiddleware, async (req, res, next) => {
+router.post('/static', authMiddleware, async (req, res, next) => {
+  try {
+    const householdId = parseInt(req.body.householdId)
+
+    if (!householdId) {
+      return res.status(400).send({message: "Please provide an id"})
+    }
+
+    const task = await Task.findAll({where: {householdId}})
+
+    res.json(task)
+  } catch (error) {
+    console.log(error)
+    res.status(400).send({message: "Something went wrong, sorry"})
+  }
+})
+
+router.post('/current', async (req, res, next) => {
   try {
     const householdId = parseInt(req.body.householdId)
     const recurrence = parseInt(req.body.recurrence)
