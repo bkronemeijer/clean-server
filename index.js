@@ -6,7 +6,8 @@ const myTaskRouter = require("./routers/myTask");
 const authRouter = require("./routers/auth");
 const PORT = process.env.PORT || 4000
 const corsMiddleWare = require("cors");
-const updateScheduleWorker = require("./workers/updateScheduleWorker")
+const checkDeadlineWorker = require("./workers/checkDeadlineWorker")
+const rotateTaskWorker = require("./workers/rotateTaskWorker")
 
 const app = express();
 
