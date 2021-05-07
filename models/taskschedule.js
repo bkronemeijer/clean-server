@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     proofPicture: { type: DataTypes.BLOB },
     taskId: { type: DataTypes.INTEGER },
     userId: { type: DataTypes.INTEGER, allowNull: false },
+    status: { type: DataTypes.STRING, allowNull: false }
   }, {
     sequelize,
     modelName: 'taskSchedule',

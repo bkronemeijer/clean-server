@@ -6,7 +6,8 @@ const TaskSchedule = require("../models").taskSchedule
 const Household = require("../models").household
 const Task = require("../models").task
 const User = require("../models").user
-const WorkerTest = require("../models").workerTest
+const WorkerTest = require("../models").workerTest;
+const { sequelize } = require('../models');
 
 const getAllHouseholds = async() => {
   try {
@@ -18,13 +19,9 @@ const getAllHouseholds = async() => {
   }
 }
 
-const getMostCurrentTasks = async() => {
-  const now = moment()
-
+const getTasksThatHaveExceededDeadline = async() => {
   try {
-    // const recentTasks = await TaskSchedule.findAll({raw: true, where: {deadline: {[Op.between]: [moment().subtract(recurrence, 'd'), new Date()] }}, include: {model: User, where: {householdId}}})
-    const recentTasks = await TaskSchedule.findAll({raw: true, where: {userId: 22, deadline: {[Op.between]: [new Date(), now.add(2, 'd')] }}})            // test string
-    // const recentTasks = await TaskSchedule.findAll({raw: true, where: {userId: householdId, deadline: {[Op.between]: [moment().subtract(recurrence, 'd'), new Date()] }}})       // should be the eventual string
+    const recentTasks = await TaskSchedule.findAll({raw: true, where: { deadline: { [Op.lt]: new Date() }, status: { [Op.in]: ['OPEN', 'MAILED'] } }})
 
     return recentTasks
   } catch (error) {
@@ -32,22 +29,19 @@ const getMostCurrentTasks = async() => {
   }
 }
 
-const mailUsers = async() => {
-  console.log("mail the users")
-}
-
-const deadlineComplete = async(isDone, taskScheduleId, userId, householdId, recurrence) => {
-  console.log("in the deadline function now", taskScheduleId)
-  let addToUser
+const deadlineComplete = async(isDone, taskScheduleId, userId) => {
   const userToUpdate = await User.findByPk(userId)
+  const taskSchedule = await TaskSchedule.findByPk(taskScheduleId);
 
-  if (isDone) {
-    addToUser = await userToUpdate.update({successes: userToUpdate.successes + 1})
-  } else if (!isDone) {
-    addToUser = await userToUpdate.update({fails: userToUpdate.fails + 1})
-  }
+  sequelize.transaction(async function(t) {
+    if (isDone) {
+      await userToUpdate.update({successes: userToUpdate.successes + 1}, { transaction: t})
+    } else if (!isDone) {
+      await userToUpdate.update({fails: userToUpdate.fails + 1}, { transaction: t})
+    }
 
-  createNewSchedule(taskScheduleId, householdId, recurrence)
+    await taskSchedule.update({ status: 'DONE' }, { transaction: t})
+  })
 }
 
 const createNewSchedule = async(taskScheduleId, householdId, recurrence) => {
@@ -85,29 +79,12 @@ const createNewSchedule = async(taskScheduleId, householdId, recurrence) => {
   }
 }
 
-const naampje = async function(){        // test line -> tests every minute
-  const tasks = await getMostCurrentTasks()
+const update = schedule.scheduleJob('*/5 * * * * *', async function(){
+  const tasks = (await getTasksThatHaveExceededDeadline()) || []
 
-  console.log(tasks)
-
-  if (tasks) {
-    tasks.forEach(async (task) => {
-      if (moment(task.deadline).isSame(moment(), 'day')) {
-        console.log("yes 1")
-        await deadlineComplete(task.isDone, task.id, task.userId, task['user.householdId'], 7)
-      } else if (moment(task.deadline).isBetween(moment().add(1, 'h'), moment().add(25, 'h'))){
-        console.log("yes 2")
-        await mailUsers()
-      } else {
-        console.log("yes 3")
-      }
-    })
-  }
-}
-
-naampje()
-
-// const update = schedule.scheduleJob('0 22 * * *', async function(){       // use this line -> tests every day at 22h
-const update = schedule.scheduleJob('0 * * * * *', naampje)
+  tasks.forEach(async (task) => {
+      await deadlineComplete(task.isDone, task.id, task.userId)
+  })
+})
 
 module.exports = update
