@@ -4,7 +4,7 @@ const userRouter = require("./routers/user");
 const taskRouter = require("./routers/task");
 const myTaskRouter = require("./routers/myTask");
 const authRouter = require("./routers/auth");
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 4000
 const corsMiddleWare = require("cors");
 const updateScheduleWorker = require("./workers/updateScheduleWorker")
 
