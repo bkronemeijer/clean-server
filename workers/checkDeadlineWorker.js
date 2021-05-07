@@ -34,7 +34,7 @@ const update = schedule.scheduleJob('*/5 * * * * *', async function(){
   const tasks = (await getTasksThatHaveExceededDeadline()) || []
 
   tasks.forEach(async (task) => {
-      await deadlineComplete(task.isDone, task.id, task.userId)
+      // await deadlineComplete(task.isDone, task.id, task.userId)
   })
 })
 
